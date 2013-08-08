@@ -1,0 +1,50 @@
+div.blockadvmulti {
+	height: auto;
+}
+p.advmulti img {
+	display:block;
+	margin:0 auto;
+	width:auto;
+	margin-bottom:10px;
+}
+
+/* 1 - Top */
+p.advmulti1 img { 
+	display:block;
+	margin:0 auto;
+	width:auto;
+	margin-bottom:10px;
+}
+
+/* 2 - Left */
+p.advmulti2 img { 
+	display:block;
+	margin:0 auto;
+	width:auto;
+	margin-bottom:10px;
+}
+
+/* 3 - Right */
+p.advmulti3 img { 
+	display:block;
+	margin:0 auto;
+	width:auto;
+	margin-bottom:10px;
+}
+
+/* 4 - Home */
+p.advmulti4 img { 
+	display:block;
+	margin:0 auto;
+	width:auto;
+	margin-bottom:10px;
+}
+
+/* 5 - Footer */
+p.advmulti5 img { 
+	display:block;
+	margin:0 auto;
+	width:auto;
+	margin-bottom:10px;
+}
+

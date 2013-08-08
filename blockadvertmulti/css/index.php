@@ -1,8 +1,6 @@
+<?php
 /*
-  Block advertising multiple
-
-  Copyright (C) 2012-2013 FeliBV
-  Copyright (C) 2013 Madman
+  Copyright (C) 2011-2012 SC Minic Studio S.R.L, office@minic.ro
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +19,14 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
+ */
 
-  @orignal author	FeliBV
-  @2nd author		Madman
-  @copyright	2012-2013 FeliBV
-  @copyright	2013 Madman
-  @link			https://github.com/PhpMadman/PrestaShop-MultiAdv
-  @tested		Prestashop 1.4.9.0 (see forum message)
-  @license		Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Spain License http://creativecommons.org/licenses/by-nc-sa/3.0/es/deed.en
-*/
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+header("Location: ../");
+exit;

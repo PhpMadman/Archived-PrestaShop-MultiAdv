@@ -1,0 +1,46 @@
+.ba_logo {
+	float: left;
+	margin: 0 10px 0 0;
+}
+.mod_blockadvertmulti a {
+	color: orange;
+}
+.mod_blockadvertmulti code {
+	font-family: monospace;
+}
+.mod_blockadvertmulti .radio {
+	margin-right: 10px;
+}
+.ipsLikeButton.ipsLikeButton_enabled {
+    background: url("../img/like_button.png") no-repeat scroll 0 0 #69AF31;
+    border: 1px solid #5EA128;
+}
+a, a:link, a:hover, a:active {
+    outline: medium none;
+}
+.ipsLikeButton {
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF !important;
+    display: inline-block;
+    font-size: 11px;
+    line-height: 20px;
+    padding: 0 6px 0 25px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+a.ipsLikeButton:hover {
+	border: 1px solid #FFFFFF;
+}
+#btnSubmit {
+	background: url("../img/coffee_btn.png") no-repeat scroll 0 0 transparent;
+	color: #303030 !important;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 10px 20px 10px 20px;
+	margin-left: 8px;
+}
+#btnSubmit div {
+	width: 84px;
+	margin-left: 40px;
+	word-wrap: break-word;
+}
