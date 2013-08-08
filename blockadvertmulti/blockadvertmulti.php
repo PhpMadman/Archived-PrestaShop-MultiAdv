@@ -3,6 +3,7 @@
   Block advertising multiple
 
   Copyright (C) 2012-2013 FeliBV
+  Copyright (C) 2013 Madman
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +23,12 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 
-  @author		FeliBV
+  @orignal author	FeliBV
+  @2nd author		Madman
   @copyright	2012-2013 FeliBV
-  @link			http://www.prestashop.com/forums/user/286018-felibv/
-  @version		Release: $Revision: 130108 $
-  @file			blockadvertmulti.php
-  @tested		Prestashop 1.4.9.0 (see forum message)
+  @copyright	2013 Madman
+  @link			https://github.com/PhpMadman/PrestaShop-MultiAdv
+  @tested		Prestashop 1.5.4.1
   @license		Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Spain License http://creativecommons.org/licenses/by-nc-sa/3.0/es/deed.en
 */
 
@@ -42,8 +43,8 @@ class blockadvertmulti extends Module
 	{
 		$this->name = 'blockadvertmulti';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.10.2';
-		$this->author = 'FeliBV';
+		$this->version = '0.11';
+		$this->author = 'FeliBV & Madman';
 		$this->need_instance = 0;
 		parent::__construct();
         $this->displayName = $this->l('Block advertising multiple');
@@ -114,6 +115,32 @@ class blockadvertmulti extends Module
 	function getContent()
 	{
 		$output = '<h2>'.$this->displayName.' v'.$this->version.'</h2>';
+		if (Tools::isSubmit('submitSideBySide'))
+		{
+			$sideTop = Tools::getValue('sideTop');
+			if ($sideTop != 0 && $sideTop != 1)
+				$output .= '<div class="alert error">'.$this->l('sideTop : Invalid choice.').'</div>';
+			else
+				Configuration::updateValue('PS_MULTI_ADV_SIDE_TOP', (int)($sideTop));
+			$output .= '<div class="conf confirm">'.$this->l('Settings updated').'</div>';
+		}
+		$output .= '
+		<form action="'.Tools::safeOutput($_SERVER['REQUEST_URI']).'" method="post">
+			<fieldset>
+				<legend>'.$this->l('Settings').'</legend>
+
+				<label>'.$this->l('Side By Side').'</label>
+				<div class="margin-form">
+					<input type="radio" name="sideTop" id="sideTop_on" value="1" '.(Tools::getValue('sideTop', Configuration::get('PS_MULTI_ADV_SIDE_TOP')) ? 'checked="checked" ' : '').'/>
+					<label class="t" for="sideTop_on"> <img src="../img/admin/enabled.gif" alt="'.$this->l('Enabled').'" title="'.$this->l('Enabled').'" /></label>
+					<input type="radio" name="sideTop" id="sideTop_off" value="0" '.(!Tools::getValue('sideTop', Configuration::get('PS_MULTI_ADV_SIDE_TOP')) ? 'checked="checked" ' : '').'/>
+					<label class="t" for="sideTop_off"> <img src="../img/admin/disabled.gif" alt="'.$this->l('Disabled').'" title="'.$this->l('Disabled').'" /></label>
+					<p class="clear">'.$this->l('Set top side by side').'</p>
+				</div>
+
+				<center><input type="submit" name="submitSideBySide" value="'.$this->l('Save').'" class="button" /></center>
+			</fieldset>
+		</form><br><br>';
 		$output .= $this->_postProcess().$this->_displayBO();
 
 		return $output;
@@ -157,13 +184,13 @@ class blockadvertmulti extends Module
 					$bnr['id'] = $row;
 					$bnr['description'] = Tools::getValue('desc_'.$row);
 					$bnr['image_link'] = Tools::getValue('link_'.$row);
-					/* Patch by Madman */
+					/* Patch by Madman start */
 					if (isset($_FILES['banner_image_' . $row]) AND isset($_FILES['banner_image_' . $row]['tmp_name']) AND !empty($_FILES['banner_image_' . $row]['tmp_name'])) {
 						$bnr['image_name'] = $_FILES['banner_image_' . $row]['name'];
 					} else {
 						$bnr['image_name'] = Tools::getValue('image_name_'.$row);
 					}
-					/* Patch by Madman */
+					/* Patch by Madman end */
 // 					$bnr['image_name'] = Tools::getValue('image_name_'.$row);
 					$bnr['block_id'] = Tools::getValue('block_'.$row);
 					$bnr['order'] = Tools::getValue('order_'.$row);
@@ -171,7 +198,7 @@ class blockadvertmulti extends Module
 					$bnr['active'] = (Tools::getValue('active_'.$row) ? '1' : '0');
 					$bnr['rotate'] = (Tools::getValue('rotate_'.$row) ? '1' : '0');
 					$bnrs[] = $bnr;
-					/* Patch by Madman */
+					/* Patch by Madman start */
 						if (isset($_FILES['banner_image_' . $row]) AND isset($_FILES['banner_image_' . $row]['tmp_name']) AND !empty($_FILES['banner_image_' . $row]['tmp_name'])) {
 							Configuration::set('PS_IMAGE_GENERATION_METHOD', 1);
 							$name = $_FILES['banner_image_' . $row]['name'];
@@ -200,7 +227,7 @@ class blockadvertmulti extends Module
 						} else {
 							$errors .= $this->displayError($this->l('An error occurred during the banner image update.'));
 						}
-					/* Patch by Madman */
+					/* Patch by Madman end */
 
 				}
 				if ($this->saveBanners($bnrs))
@@ -303,6 +330,9 @@ class blockadvertmulti extends Module
 								 , 'banners' => $this->getBanners($hook, false)
 								 , 'img_path' => $this->img_wpath
 			));
+			if($hook == 1) {
+				$smarty->assign(array('side_by_side' => Configuration::get('PS_MULTI_ADV_SIDE_TOP') ) );
+			}
 				$side = $sideHook[$hook];
 				$file = "blockadvertmulti-$side.tpl";
 			return $this->display( dirname(__FILE__),$file);
@@ -385,14 +415,12 @@ class blockadvertmulti extends Module
 	*/
 	public function saveBanners($bnrs)
 	{
-		$idx = 0;
 		$success = true;
 		$db = Db::getInstance();
 		foreach ($bnrs as $bnr)
 		{
-			$idx++;
 			$values = array( 'active' => $bnr['active'], 'description' => pSQL($bnr['description']), 'image_name' => pSQL($bnr['image_name'])
-		                   , 'image_link' => pSQL($bnr['image_link']), 'block_id' => (int)$bnr['block_id'], 'order' => $idx
+		                   , 'image_link' => pSQL($bnr['image_link']), 'block_id' => (int)$bnr['block_id'], 'order' => $bnr['order']
 					       , 'open_blank' => $bnr['blank'], 'rotate' => $bnr['rotate'] );
 		    $result = $db->autoExecute(_DB_PREFIX_.'blockadvertmulti', $values, 'UPDATE', 'id_blockadvertmulti = '.$bnr['id'] );
 			if (!$result) $success = false;
