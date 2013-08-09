@@ -1,6 +1,7 @@
-<div id="blockadvmulti{$hook}" class="blockadvmulti" {if $side_by_side}style="text-align:center;" {/if} >
+<div id="blockadvmulti{$hook}" class="blockadvmulti" {if $side_by_side}style="text-align:center;" {/if} > <!-- This need to be forced to be higher then banner img. Make a setting of it! -->
 {$rotate=""}
 {$numgrups=0}
+<hr>{$side_by_side}<hr>
 {foreach from=$banners item=banner}
 	{if $banner.rotate && $rotate != $banner.rotate}
 	   {$rotate = $banner.rotate}
