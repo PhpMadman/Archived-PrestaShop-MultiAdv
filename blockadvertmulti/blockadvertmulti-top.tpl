@@ -8,7 +8,7 @@
 	   {if $numgrups > 1}
 			</div>
 	   {/if}
-	   <div class="advmulti-rotate">
+	   <div class="advmulti-rotate" style="position:absolute;left:50%">
 	{/if}
 	<p id="advmulti{$banner.id_blockadvertmulti}" class="advmulti{$hook}" {if $side_by_side}style="display:inline-block;" {/if} >
 		{if $banner.image_link != ""}
@@ -24,8 +24,8 @@
 	</div>
 	<script type="text/javascript">
 	{literal}$(document).ready(function() {
-// 		$("#blockadvmulti{/literal}{$hook} .advmulti-rotate").innerfade({literal}{'containerheight': 'auto', 'timeout': 5000});
-		$("#blockadvmulti{/literal}{$hook} .advmulti-rotate").innerfade({literal}{'containerheight': '100px', 'timeout': 5000});
+		$("#blockadvmulti{/literal}{$hook} .advmulti-rotate").innerfade({literal}{'containerheight': 'auto', 'timeout': 5000});
+// 		$("#blockadvmulti{/literal}{$hook} .advmulti-rotate").innerfade({literal}{'containerheight': '100px', 'timeout': 5000});
 	});{/literal}
 	</script>
 {/if}

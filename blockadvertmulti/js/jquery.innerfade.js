@@ -58,7 +58,8 @@
             $(container).css('height', settings.containerheight).addClass(settings.runningclass);
             for (var i = 0; i < elements.length; i++) {
 //                 $(elements[i]).css('z-index', String(elements.length-i)).css('position', 'absolute').hide();
-		$(elements[i]).css('z-index', String(elements.length-i)).css('position', 'absolute').css('left','50%').hide();
+// 		$(elements[i]).css('z-index', String(elements.length-i)).css('position', 'absolute').css('left','50%').hide();
+		$(elements[i]).css('z-index', String(elements.length-i)).css('position', 'absolute').css('left','-50%').hide();
             };
             if (settings.type == "sequence") {
                 setTimeout(function() {
