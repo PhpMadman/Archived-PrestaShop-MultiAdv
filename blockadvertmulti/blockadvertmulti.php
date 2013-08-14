@@ -115,33 +115,55 @@ class blockadvertmulti extends Module
 	function getContent()
 	{
 		$output = '<h2>'.$this->displayName.' v'.$this->version.'</h2>';
-		if (Tools::isSubmit('submitSideBySide'))
+		if (Tools::isSubmit('submitMultAdvSet'))
 		{
 			$sideTop = Tools::getValue('sideTop');
-			if ($sideTop != 0 && $sideTop != 1)
-				$output .= '<div class="alert error">'.$this->l('sideTop : Invalid choice.').'</div>';
-			else
+			if ($sideTop != 0 && $sideTop != 1) {
+				$error .= $this->l('sideTop : Invalid choice.<br>');
+			} else {
 				Configuration::updateValue('PS_MULTI_ADV_SIDE_TOP', (int)($sideTop));
-			$output .= '<div class="conf confirm">'.$this->l('Settings updated').'</div>';
+				$good .= $this->l('Side By Side Top updated.<br>');
+			}
+			$rotateTop = Tools::getValue('rotateTop');
+			if ($rotateTop < 0) {
+				$error .= $this->l('rotateTop : Invalid choice.<br>');
+			} else {
+				Configuration::updateValue('PS_MULTI_ADV_ROTATE_TOP', (int)($rotateTop));
+				$good .= $this->l('Rotate Top updated.<br>');
+			}
+			if($error) {
+				$output .= '<div class="alert error">' . $error . '</div>';
+			}
+			if($good) {
+				$output .= '<div class="conf confirm">'. $good .'</div>';
+			}
+			
 		}
+		$output .= $this->_postProcess().$this->_displayBO();
 		$output .= '
 		<form action="'.Tools::safeOutput($_SERVER['REQUEST_URI']).'" method="post">
 			<fieldset>
-				<legend>'.$this->l('Settings').'</legend>
-
-				<label>'.$this->l('Side By Side').'</label>
+				<legend>'.$this->l('Settings').'</legend>';
+				
+		$output .='<label>'.$this->l('Side By Side Top').'</label>
 				<div class="margin-form">
 					<input type="radio" name="sideTop" id="sideTop_on" value="1" '.(Tools::getValue('sideTop', Configuration::get('PS_MULTI_ADV_SIDE_TOP')) ? 'checked="checked" ' : '').'/>
 					<label class="t" for="sideTop_on"> <img src="../img/admin/enabled.gif" alt="'.$this->l('Enabled').'" title="'.$this->l('Enabled').'" /></label>
 					<input type="radio" name="sideTop" id="sideTop_off" value="0" '.(!Tools::getValue('sideTop', Configuration::get('PS_MULTI_ADV_SIDE_TOP')) ? 'checked="checked" ' : '').'/>
 					<label class="t" for="sideTop_off"> <img src="../img/admin/disabled.gif" alt="'.$this->l('Disabled').'" title="'.$this->l('Disabled').'" /></label>
 					<p class="clear">'.$this->l('Set top side by side').'</p>
-				</div>
-
-				<center><input type="submit" name="submitSideBySide" value="'.$this->l('Save').'" class="button" /></center>
+				</div>';
+				
+		$output .='<label>'.$this->l('Rotate Top Height').'</label>
+				<div class="margin-form">
+					<input type="text" name="rotateTop" id="rotateTop" value="0" '.(Tools::getValue('rotateTop', Configuration::get('PS_MULTI_ADV_ROTATE_TOP')) ? 'checked="checked" ' : '').'/>
+					<p class="clear">'.$this->l('Set height of your biggest img in top banners that are rotateing').'</p>
+				</div>';
+				
+		$output .= '<center><input type="submit" name="submitMultAdvSet" value="'.$this->l('Save').'" class="button" /></center>
 			</fieldset>
 		</form><br><br>';
-		$output .= $this->_postProcess().$this->_displayBO();
+		
 
 		return $output;
 	}
@@ -331,7 +353,10 @@ class blockadvertmulti extends Module
 								 , 'img_path' => $this->img_wpath
 			));
 			if($hook == 1) {
-				$smarty->assign(array('side_by_side' => Configuration::get('PS_MULTI_ADV_SIDE_TOP') ) );
+				$smarty->assign(array('side_top' => Configuration::get('PS_MULTI_ADV_SIDE_TOP') ) );
+				if(Configuration::get('PS_MULTI_ADV_ROTATE_TOP') > 0) {
+					$smarty->assign(array('rotate_top' => Configuration::get('PS_MULTI_ADV_ROTATE_TOP') ) );
+				}
 			}
 				$side = $sideHook[$hook];
 				$file = "blockadvertmulti-$side.tpl";
@@ -391,7 +416,6 @@ class blockadvertmulti extends Module
 		return true;
 	}
 
-	/* Patch by Madman */
 	/**
 	*	updateBanner($bnr)
 	*	Changes image on a existing banner
@@ -407,7 +431,6 @@ class blockadvertmulti extends Module
 			return false;
 		return true;
 	}
-	/* Patch by Madman */
 
 	/**
 	*	saveBanners($bnrs)

@@ -1,7 +1,6 @@
-<div id="blockadvmulti{$hook}" class="blockadvmulti" {if $side_by_side}style="text-align:center;" {/if} > <!-- This need to be forced to be higher then banner img. Make a setting of it! -->
+<div id="blockadvmulti{$hook}" class="blockadvmulti" style="{if $side_top}"text-align:center;{/if}{if $rotate_top}height:{$rotate_top}px{/if}" >
 {$rotate=""}
 {$numgrups=0}
-<hr>{$side_by_side}<hr>
 {foreach from=$banners item=banner}
 	{if $banner.rotate && $rotate != $banner.rotate}
 	   {$rotate = $banner.rotate}
@@ -9,17 +8,17 @@
 	   {if $numgrups > 1}
 			</div>
 	   {/if}
-	   <div class="advmulti-rotate" style="position:absolute;left:50%">
+	   <div class="advmulti-rotate">
 	{/if}
-	<p id="advmulti{$banner.id_blockadvertmulti}" class="advmulti{$hook}" {if $side_by_side}style="display:inline-block;" {/if} >
+	<div id="advmulti{$banner.id_blockadvertmulti}" class="advmulti{$hook}" {if $side_top}style="display:inline-block;" {/if}>
 		{if $banner.image_link != ""}
-		<a href="{$banner.image_link}" target="{if $banner.open_blank==0}_self{else}_blank{/if}" title="{$banner.description}">
+		<a href="{$banner.image_link}" target="{if $banner.open_blank==0}_self{else}_blank{/if}" title="{$banner.description}" >
 		{/if}
-			<img src="{$img_path}{$banner.image_name}" alt="{$banner.description}" class="advmulti-img" />
+			<img src="{$img_path}{$banner.image_name}" alt="{$banner.description}" class="advmulti-img" >
 		{if $banner.image_link != ""}
 		</a>
 		{/if}
-	</p>
+	</div>
 {/foreach}
 {if $numgrups > 0}
 	</div>
